@@ -36,3 +36,6 @@ android {
         jvmToolchain(17)
     }
 }
+dependencies {
+    implementation("androidx.core:core-ktx:+")
+}
