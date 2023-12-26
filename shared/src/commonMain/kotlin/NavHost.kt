@@ -1,4 +1,5 @@
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.navigation.transition.NavTransition
@@ -25,7 +26,7 @@ internal fun rootNavHost() {
       navTransition = NavTransition(),
     ) {
 
-      val stockIndices = stockRepository.getStockIndices()
+      val stockIndices = stockRepository.indicesState.collectAsState().value
 
       if (stockIndices.isNotEmpty()) {
         StockIndex(navigator, stockIndices)
