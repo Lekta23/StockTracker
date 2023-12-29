@@ -33,9 +33,9 @@ fun StockIndexRow(stockIndex: StockIndex) {
       .fillMaxWidth()
       .padding(16.dp)
   ) {
-    Text(text = stockIndex.name, modifier = Modifier.weight(1f))
-    Text(text = "${stockIndex.value}", modifier = Modifier.weight(1f))
-    Text(text = stockIndex.percentChange.toString()+"%", color = if (stockIndex.percentChange >= 0) Color.Green else Color.Red)
+    Text(text = stockIndex.symbol, modifier = Modifier.weight(1f))
+    Text(text = "${stockIndex.currentPrice}", modifier = Modifier.weight(1f))
+    Text(text = stockIndex.percentChange?.toString()+"%", color = if (stockIndex.percentChange!! >= 0) Color.Green else Color.Red)
   }
 }
 
