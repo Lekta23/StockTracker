@@ -47,14 +47,13 @@ fun StockIndex(navigator: Navigator, stockIndices: List<StockIndex>) {
     topBar = {
       TopAppBar(
         title = { Text("Stock Indices") },
-        navigationIcon = {
-          IconButton(onClick = { /*TODO*/ }) {
-            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-          }
-        }
       )
+    },
+    bottomBar = {
+      BottomBar(navigator = navigator, currentRoute = "/index")
     }
   ) {
     StockIndexList(stockIndices)
   }
+
 }

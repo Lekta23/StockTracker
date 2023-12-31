@@ -15,5 +15,10 @@ fun welcome(navigator: Navigator) {
     }) {
       Text("Index")
     }
+    Button(onClick = {
+      navigator.navigate(route = "/watchlist")
+    }) {
+      Text("Watchlist")
+    }
   }
 }

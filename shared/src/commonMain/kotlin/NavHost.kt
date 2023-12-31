@@ -33,9 +33,16 @@ internal fun rootNavHost() {
       }
     }
     scene(
-      route = "/score/{score}",
+      route = "/watchlist",
       navTransition = NavTransition(),
     ) {
+      WatchList(navigator)
+    }
+    scene(
+      route = "/news",
+      navTransition = NavTransition(),
+    ) {
+      News(navigator)
     }
   }
 }
