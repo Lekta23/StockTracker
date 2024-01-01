@@ -11,6 +11,6 @@ fun AppPreview() {
     App()
 }
 
-actual fun openUrl(url: String) {
+/*actual fun openUrl(url: String) {
     java.awt.Desktop.getDesktop()?.browse(java.net.URI(url))
-}
+}*/
