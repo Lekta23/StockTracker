@@ -33,6 +33,18 @@ data class StockSymbol(
     val type: String // Security type
 )
 
+@Serializable
+data class NewsArticle(
+    val category: String,
+    val datetime: Long,
+    val headline: String,
+    val id: Int,
+    val image: String,
+    val related: String,
+    val source: String,
+    val summary: String,
+    val url: String
+)
 
 class FinnhubDataSource(private val apiKey: String) {
     private val client = HttpClient {
@@ -55,19 +67,32 @@ class FinnhubDataSource(private val apiKey: String) {
         }.body()
         return mapResponseToFinnhubStockIndex(response, symbol)
     }
-
+    // Méthode pour récupérer les nouvelles
+    suspend fun getGeneralNews(): List<NewsArticle> {
+        return try {
+            val response: List<NewsArticle> = client.get("https://finnhub.io/api/v1/news") {
+                parameter("category", "general")
+                parameter("token", apiKey)
+            }.body()
+            response
+        } catch (e: Exception) {
+            // Gérer l'exception, retourner une liste vide ou relancer
+            emptyList()
+        }
+    }
     private fun mapResponseToFinnhubStockIndex(response: QuoteResponse, symbol: String): StockIndex {
         return StockIndex(
             symbol = symbol,
             currentPrice = response.c,
-            highPrice = response.h,
-            lowPrice = response.l,
-            openPrice = response.o,
-            previousClosePrice = response.pc,
-            percentChange = response.dp,
-            change = response.d,
+            highPrice = response.h ?: 0.0,
+            lowPrice = response.l ?: 0.0,
+            openPrice = response.o ?: 0.0,
+            previousClosePrice = response.pc ?: 0.0,
+            percentChange = response.dp ?: 0f,
+            change = response.d ?: 0f,
             timestamp = response.t
         )
     }
+
 }
 

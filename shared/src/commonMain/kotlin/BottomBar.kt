@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import moe.tlaster.precompose.navigation.NavHost
@@ -35,7 +36,7 @@ fun BottomBar(navigator: Navigator, currentRoute: String) {
       }
     )
     BottomNavigationItem(
-      icon = { Icon(Icons.Default.Favorite, contentDescription = "News") },
+      icon = { Icon(Icons.Default.List, contentDescription = "News") },
       label = { Text("News") },
       selected = currentRoute == "/news",
       onClick = {

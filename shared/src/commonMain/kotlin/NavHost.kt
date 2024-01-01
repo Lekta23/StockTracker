@@ -13,7 +13,7 @@ internal fun rootNavHost() {
   NavHost(
     navigator = navigator,
     navTransition = NavTransition(),
-    initialRoute = "/welcome",
+    initialRoute = "/index",
   ) {
     scene(
       route = "/welcome",
@@ -42,7 +42,7 @@ internal fun rootNavHost() {
       route = "/news",
       navTransition = NavTransition(),
     ) {
-      News(navigator)
+      News(navigator, stockRepository.newsState.collectAsState().value)
     }
   }
 }
