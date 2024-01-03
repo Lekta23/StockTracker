@@ -1,16 +1,17 @@
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.seiko.imageloader.rememberImagePainter
 import moe.tlaster.precompose.navigation.Navigator
 import network.data.NewsArticle
+
+expect fun openUrl(url: String)
 
 @Composable
 fun News(navigator: Navigator, news: List<NewsArticle>) {
@@ -40,8 +41,6 @@ fun NewsList(news: List<NewsArticle>) {
   }
 }
 
-//expect fun openUrl(url: String)
-
 @Composable
 fun NewsItem(article: NewsArticle) {
   Card(
@@ -53,6 +52,11 @@ fun NewsItem(article: NewsArticle) {
     Column(
       modifier = Modifier.padding(16.dp)
     ) {
+      Image(
+        painter = rememberImagePainter(article.image),
+        contentDescription = "Article Image",
+        modifier = Modifier.fillMaxWidth()
+      )
       Text(
         text = article.headline,
         style = MaterialTheme.typography.h6,
@@ -66,7 +70,7 @@ fun NewsItem(article: NewsArticle) {
         maxLines = 3,
         overflow = TextOverflow.Ellipsis
       )
-      Button(onClick = { /*openUrl(article.url)*/ }) {
+      Button(onClick = { openUrl(article.url) }) {
         Text("Read More")
       }
     }

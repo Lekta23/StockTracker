@@ -1,6 +1,7 @@
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import moe.tlaster.precompose.navigation.NavHost
+import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.navigation.transition.NavTransition
 import network.data.StockRepository
@@ -30,6 +31,16 @@ internal fun rootNavHost() {
 
       if (stockIndices.isNotEmpty()) {
         StockIndex(navigator, stockIndices)
+      }
+    }
+scene(
+      route = "/index/{symbol}",
+      navTransition = NavTransition(),
+    ) {
+      val symbol = it.path<String>("symbol")
+      val stockIndex = stockRepository.indicesState.collectAsState().value.firstOrNull { it.symbol == symbol }
+      if (stockIndex != null) {
+        StockDetails(stockIndex, navigator)
       }
     }
     scene(

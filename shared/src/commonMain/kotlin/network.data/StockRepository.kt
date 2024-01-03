@@ -38,6 +38,7 @@ class StockRepository : CoroutineScope {
         getNews()
     }
 
+
     private suspend fun getStockIndices(): List<StockIndex> {
         val symbols = listOf("AAPL", "GOOG", "TSLA", "AMZN", "MSFT")
         return symbols.mapNotNull { symbol ->
