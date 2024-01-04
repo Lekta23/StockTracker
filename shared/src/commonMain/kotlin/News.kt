@@ -3,6 +3,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -18,7 +20,7 @@ fun News(navigator: Navigator, news: List<NewsArticle>) {
   Scaffold(
     topBar = {
       TopAppBar(
-        title = { Text("") }
+        title = { Text("News") },
       )
     },
     bottomBar = {
@@ -33,6 +35,7 @@ fun News(navigator: Navigator, news: List<NewsArticle>) {
 fun NewsList(news: List<NewsArticle>) {
   LazyColumn(
     contentPadding = PaddingValues(all = 8.dp),
+    modifier = Modifier.padding(bottom = 56.dp),
     verticalArrangement = Arrangement.spacedBy(4.dp)
   ) {
     items(news) { article ->

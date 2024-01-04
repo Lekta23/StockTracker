@@ -30,8 +30,14 @@ class StockRepository : CoroutineScope {
     private var _homeIndicesState =  MutableStateFlow(listOf<StockIndex>())
     val indicesState = _homeIndicesState.asStateFlow()
 
+    private var _watchlistState = MutableStateFlow(listOf<StockIndex>())
+    val watchlistState = _watchlistState.asStateFlow()
+
     private var _newsState = MutableStateFlow(listOf<NewsArticle>())
     val newsState = _newsState.asStateFlow()
+
+    private var _homeNewsState = MutableStateFlow(listOf<NewsArticle>())
+    val homeNewsState = _homeNewsState.asStateFlow()
 
     init {
         updateIndices()
@@ -40,7 +46,7 @@ class StockRepository : CoroutineScope {
 
 
     private suspend fun getStockIndices(): List<StockIndex> {
-        val symbols = listOf("AAPL", "GOOG", "TSLA", "AMZN", "MSFT")
+        val symbols = listOf("AAPL", "GOOG", "TSLA", "AMZN", "MSFT", "BABA", "O")
         return symbols.mapNotNull { symbol ->
             try {
                 dataSource.getStockIndex(symbol)
@@ -57,10 +63,11 @@ class StockRepository : CoroutineScope {
                 try {
                     val newsList = dataSource.getGeneralNews()
                     _newsState.value = newsList
+                    _homeNewsState.value = newsList.take(3)
                 } catch (e: Exception) {
                     // Gérer l'exception, par exemple enregistrer l'erreur
                 }
-                delay(60000) // Mettre à jour les actualités toutes les 60 secondes, par exemple
+                delay(300000) // Mettre à jour les actualités toutes les 60 secondes, par exemple
             }
         }
     }
@@ -68,8 +75,11 @@ class StockRepository : CoroutineScope {
     private fun updateIndices() {
         launch {
             while (isActive) {
-                _homeIndicesState.value = getStockIndices()
-                delay(5000)
+                val indices = getStockIndices()
+                _watchlistState.value = indices
+
+                _homeIndicesState.value = indices.take(5)
+                delay(30000)
             }
         }
     }

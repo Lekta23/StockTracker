@@ -28,9 +28,10 @@ internal fun rootNavHost() {
     ) {
 
       val stockIndices = stockRepository.indicesState.collectAsState().value
+      val news = stockRepository.homeNewsState.collectAsState().value
 
       if (stockIndices.isNotEmpty()) {
-        StockIndex(navigator, stockIndices)
+        StockIndex(navigator, stockIndices, news)
       }
     }
 scene(
@@ -38,7 +39,7 @@ scene(
       navTransition = NavTransition(),
     ) {
       val symbol = it.path<String>("symbol")
-      val stockIndex = stockRepository.indicesState.collectAsState().value.firstOrNull { it.symbol == symbol }
+      val stockIndex = stockRepository.watchlistState.collectAsState().value.firstOrNull { it.symbol == symbol }
       if (stockIndex != null) {
         StockDetails(stockIndex, navigator)
       }
@@ -47,7 +48,11 @@ scene(
       route = "/watchlist",
       navTransition = NavTransition(),
     ) {
-      WatchList(navigator)
+        val stockIndices = stockRepository.watchlistState.collectAsState().value
+
+        if (stockIndices.isNotEmpty()) {
+          StockWatchList(navigator, stockIndices)
+        }
     }
     scene(
       route = "/news",
