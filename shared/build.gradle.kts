@@ -34,6 +34,9 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:2.3.4") // Simplify handling of content type based deserialization
                 implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.4") // make your dataclasses serializable
                 api("moe.tlaster:precompose:1.5.7")
+                api("io.github.qdsfdhvh:image-loader:1.7.1")
+                // optional - Moko Resources Decoder
+                api("io.github.qdsfdhvh:image-loader-extension-moko-resources:1.7.1")
             }
         }
         val androidMain by getting {
