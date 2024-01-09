@@ -1,0 +1,20 @@
+CREATE TABLE StockTrackerDatabase (
+    symbol TEXT PRIMARY KEY,
+    currentPrice REAL,
+    highPrice REAL,
+    lowPrice REAL,
+    openPrice REAL,
+    previousClosePrice REAL,
+    percentChange REAL,
+    change REAL,
+    timestamp INTEGER
+);
+
+insertOrUpdateIndex {
+    INSERT INTO StockTrackerDatabase(symbol, currentPrice, highPrice, lowPrice, openPrice, previousClosePrice, percentChange, change, timestamp)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+}
+
+selectAllIndices {
+    SELECT * FROM StockTrackerDatabase;
+}

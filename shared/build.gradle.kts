@@ -3,8 +3,12 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.compose")
     kotlin("plugin.serialization") version "1.9.10"
+    id("app.cash.sqldelight") version "2.0.0"
 }
-
+repositories {
+    google()
+    mavenCentral()
+}
 kotlin {
     androidTarget()
 
@@ -37,6 +41,9 @@ kotlin {
                 api("io.github.qdsfdhvh:image-loader:1.7.1")
                 // optional - Moko Resources Decoder
                 api("io.github.qdsfdhvh:image-loader-extension-moko-resources:1.7.1")
+
+                implementation("app.cash.sqldelight:runtime:2.0.0")
+                implementation("app.cash.sqldelight:coroutines-extensions:2.0.0")
             }
         }
         val androidMain by getting {
@@ -45,6 +52,7 @@ kotlin {
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.10.1")
                 implementation("io.ktor:ktor-client-android:2.3.4") // for Android
+                implementation("app.cash.sqldelight:android-driver:2.0.0")
 
             }
         }
@@ -58,12 +66,15 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
                 implementation("io.ktor:ktor-client-darwin:2.3.4") //for iOS
+
+                implementation("app.cash.sqldelight:native-driver:2.0.0")
             }
         }
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.common)
                 implementation("io.ktor:ktor-client-apache:2.3.4") // for Desktop
+                implementation("app.cash.sqldelight:sqlite-driver:2.0.0")
             }
         }
     }
@@ -95,3 +106,12 @@ dependencies {
     implementation("androidx.navigation:navigation-common-ktx:2.7.6")
     implementation("androidx.core:core-ktx:+")
 }
+
+sqldelight {
+    databases {
+        create("StockTrackerDatabase") {
+            packageName.set("com.stocktracker.db")
+        }
+    }
+}
+
