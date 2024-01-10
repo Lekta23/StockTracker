@@ -22,7 +22,7 @@ data class StockIndex(
     val timestamp: Long
 )
 
-class StockRepository : CoroutineScope {
+class StockRepository(private val dbDataSource: StockDatabaseDataSource) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
@@ -49,10 +49,12 @@ class StockRepository : CoroutineScope {
         val symbols = listOf("AAPL", "GOOG", "TSLA", "AMZN", "MSFT", "BABA", "O")
         return symbols.mapNotNull { symbol ->
             try {
-                dataSource.getStockIndex(symbol)
+                val stockIndex = dataSource.getStockIndex(symbol)
+                dbDataSource.storeIndex(stockIndex)  // Stocker dans la base de données
+                stockIndex
             } catch (e: Exception) {
-                // Gérer l'exception, peut-être enregistrer l'erreur ou renvoyer null
-                null
+                // En cas d'exception, récupérer de la base de données
+                dbDataSource.getStockIndex(symbol)
             }
         }
     }

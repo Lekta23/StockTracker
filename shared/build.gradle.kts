@@ -44,6 +44,7 @@ kotlin {
 
                 implementation("app.cash.sqldelight:runtime:2.0.0")
                 implementation("app.cash.sqldelight:coroutines-extensions:2.0.0")
+                implementation("app.cash.sqldelight:primitive-adapters:2.0.0")
             }
         }
         val androidMain by getting {

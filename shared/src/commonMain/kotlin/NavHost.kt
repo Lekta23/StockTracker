@@ -1,12 +1,21 @@
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import moe.tlaster.precompose.navigation.NavHost
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.navigation.transition.NavTransition
+import network.data.StockDatabaseDataSource
 import network.data.StockRepository
 
-private val stockRepository = StockRepository()
+
+val driverFactory = DriverFactory()
+val sqlDriver = driverFactory.createDriver()
+val dbDataSource = StockDatabaseDataSource(sqlDriver, CoroutineScope(Dispatchers.IO))
+val stockRepository = StockRepository(dbDataSource)
 
 @Composable
 internal fun rootNavHost() {

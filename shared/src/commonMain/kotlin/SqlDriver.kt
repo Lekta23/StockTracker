@@ -1,7 +1,7 @@
 import app.cash.sqldelight.db.SqlDriver
 import com.stocktracker.db.StockTrackerDatabase
 
-expect class DriverFactory {
+expect class DriverFactory() {
     fun createDriver(): SqlDriver
 }
 

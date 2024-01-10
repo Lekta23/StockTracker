@@ -1,4 +1,4 @@
-CREATE TABLE StockTrackerDatabase (
+CREATE TABLE IF NOT EXISTS StockTrackerDatabase (
     symbol TEXT PRIMARY KEY,
     currentPrice REAL,
     highPrice REAL,
@@ -17,4 +17,8 @@ insertOrUpdateIndex {
 
 selectAllIndices {
     SELECT * FROM StockTrackerDatabase;
+}
+
+selectIndex {
+    SELECT * FROM StockTrackerDatabase WHERE symbol = ?;
 }
