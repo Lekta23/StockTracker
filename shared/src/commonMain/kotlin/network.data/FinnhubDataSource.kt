@@ -34,6 +34,20 @@ data class StockSymbol(
 )
 
 @Serializable
+data class StockSearchResponse(
+    val count: Int,
+    val result: List<StockSearchResult>
+)
+
+@Serializable
+data class StockSearchResult(
+    val description: String,
+    val displaySymbol: String,
+    val symbol: String,
+    val type: String
+)
+
+@Serializable
 data class NewsArticle(
     val category: String,
     val datetime: Long,
@@ -92,6 +106,19 @@ class FinnhubDataSource(private val apiKey: String) {
             change = response.d ?: 0f,
             timestamp = response.t
         )
+    }
+
+    suspend fun searchSymbol(query: String): List<StockSearchResult> {
+        return try {
+            val response: StockSearchResponse = client.get("https://finnhub.io/api/v1/search") {
+                parameter("q", query)
+                parameter("token", apiKey)
+            }.body()
+            response.result;
+        } catch (e: Exception) {
+            // Gérer l'exception, retourner une liste vide ou relancer
+            emptyList()
+        }
     }
 
 }

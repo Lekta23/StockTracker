@@ -106,6 +106,7 @@ dependencies {
     implementation("androidx.core:core-ktx:+")
     implementation("androidx.navigation:navigation-common-ktx:2.7.6")
     implementation("androidx.core:core-ktx:+")
+  implementation("androidx.appcompat:appcompat:1.6.1")
 }
 
 sqldelight {

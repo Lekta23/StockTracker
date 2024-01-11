@@ -22,7 +22,7 @@ data class StockIndex(
     val timestamp: Long
 )
 
-class StockRepository(private val dbDataSource: StockDatabaseDataSource) : CoroutineScope {
+class StockRepository   (private val dbDataSource: StockDatabaseDataSource) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
@@ -46,7 +46,8 @@ class StockRepository(private val dbDataSource: StockDatabaseDataSource) : Corou
 
 
     private suspend fun getStockIndices(): List<StockIndex> {
-        val symbols = listOf("AAPL", "GOOG", "TSLA", "AMZN", "MSFT", "BABA", "O")
+        // val symbols = listOf("AAPL", "GOOG", "TSLA", "AMZN", "MSFT", "BABA", "O")
+        val symbols = dbDataSource.getAllSymbols()
         return symbols.mapNotNull { symbol ->
             try {
                 val stockIndex = dataSource.getStockIndex(symbol)
@@ -84,5 +85,9 @@ class StockRepository(private val dbDataSource: StockDatabaseDataSource) : Corou
                 delay(30000)
             }
         }
+    }
+
+    private suspend fun searchSymbol(query: String): List<StockSearchResult> {
+        return dataSource.searchSymbol(query)
     }
 }

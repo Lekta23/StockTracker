@@ -53,5 +53,9 @@ class StockDatabaseDataSource(private val sqlDriver: SqlDriver, private val coro
         }
     }
 
+    fun getAllSymbols(): List<String> {
+        return dbQueries.selectAllIndices().executeAsList().map { it.symbol }
+    }
+
     // Implémentez d'autres méthodes si nécessaire
 }

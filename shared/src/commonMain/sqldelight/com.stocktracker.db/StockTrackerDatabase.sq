@@ -19,6 +19,10 @@ selectAllIndices {
     SELECT * FROM StockTrackerDatabase;
 }
 
+selectAllSymbols {
+    SELECT symbol FROM StockTrackerDatabase;
+}
+
 selectIndex {
     SELECT * FROM StockTrackerDatabase WHERE symbol = ?;
 }
