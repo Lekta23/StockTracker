@@ -27,11 +27,16 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
 import network.data.StockIndex
-
 @Composable
-fun StockWatchList(navigator: Navigator, stockIndices: List<StockIndex>) {
+fun StockWatchList(
+  navigator: Navigator,
+  stockIndices: List<StockIndex>,
+  coroutineScope: CoroutineScope // Explicitly pass CoroutineScope
+) {
   var isSearching by remember { mutableStateOf(false) }
   var searchText by remember { mutableStateOf("") }
 
@@ -58,21 +63,24 @@ fun StockWatchList(navigator: Navigator, stockIndices: List<StockIndex>) {
     StockIndexList(stockIndices, navigator)
     if (isSearching) {
       SearchDialog(
+        navigator = navigator,
         searchText = searchText,
         onSearchTextChange = { newText -> searchText = newText },
-        onDismissRequest = { isSearching = false }
+        onDismissRequest = { isSearching = false },
+        coroutineScope = coroutineScope // Pass CoroutineScope to SearchDialog
       )
     }
   }
-
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchDialog(
+  navigator: Navigator,
   searchText: String,
   onSearchTextChange: (String) -> Unit,
-  onDismissRequest: () -> Unit
+  onDismissRequest: () -> Unit,
+  coroutineScope: CoroutineScope // Explicitly pass CoroutineScope
 ) {
   var isFocused by remember { mutableStateOf(true) }
   val keyboardController = LocalSoftwareKeyboardController.current
@@ -117,7 +125,10 @@ fun SearchDialog(
     confirmButton = {
       Button(
         onClick = {
-          searchSymbol(searchText)
+          coroutineScope.launch { // Use the provided CoroutineScope
+            stockRepository.searchSymbol(searchText)
+            navigator.navigate("/search")
+          }
         }
       ) {
         Text("Search")
@@ -133,8 +144,4 @@ fun SearchDialog(
       }
     }
   )
-}
-
-fun searchSymbol(symbol: String) {
-  println("searching for $symbol")
 }

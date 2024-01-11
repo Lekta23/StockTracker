@@ -39,6 +39,9 @@ class StockRepository   (private val dbDataSource: StockDatabaseDataSource) : Co
     private var _homeNewsState = MutableStateFlow(listOf<NewsArticle>())
     val homeNewsState = _homeNewsState.asStateFlow()
 
+    private var _searchState = MutableStateFlow(listOf<StockSearchResult>())
+    val searchState = _searchState.asStateFlow()
+
     init {
         updateIndices()
         getNews()
@@ -87,7 +90,10 @@ class StockRepository   (private val dbDataSource: StockDatabaseDataSource) : Co
         }
     }
 
-    private suspend fun searchSymbol(query: String): List<StockSearchResult> {
-        return dataSource.searchSymbol(query)
+    suspend fun searchSymbol(query: String) {
+        print("searchSymbol" + query)
+        val indices = dataSource.searchSymbol(query)
+        print("searchSymbol" + indices)
+        _searchState.value = indices
     }
 }
