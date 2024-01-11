@@ -50,7 +50,7 @@ scene(
       val symbol = it.path<String>("symbol")
       val stockIndex = stockRepository.watchlistState.collectAsState().value.firstOrNull { it.symbol == symbol }
       if (stockIndex != null) {
-        StockDetails(stockIndex, navigator)
+        StockDetails(stockIndex, navigator, stockRepository)
       }
     }
     scene(

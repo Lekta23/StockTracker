@@ -24,9 +24,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import moe.tlaster.precompose.navigation.Navigator
 import network.data.StockIndex
+import network.data.StockRepository
 
 @Composable
-fun StockDetails(stockIndex: StockIndex, navigator: Navigator) {
+fun StockDetails(stockIndex: StockIndex, navigator: Navigator, stockRepository: StockRepository) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -40,13 +41,20 @@ fun StockDetails(stockIndex: StockIndex, navigator: Navigator) {
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = {
+                        stockRepository.addIndex(stockIndex)
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.Add,
                             contentDescription = "Add stock to the watch list"
                         )
                     }
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = {
+                        stockRepository.deleteIndex(stockIndex.symbol)
+                        navigator.goBack()
+                        stockRepository.refreshWatchList()
+
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
                             contentDescription = "Delete stock from the watch list"

@@ -57,5 +57,9 @@ class StockDatabaseDataSource(private val sqlDriver: SqlDriver, private val coro
         return dbQueries.selectAllIndices().executeAsList().map { it.symbol }
     }
 
+    fun deleteIndex(symbol: String) {
+        dbQueries.deleteIndex(symbol)
+    }
+
     // Implémentez d'autres méthodes si nécessaire
 }

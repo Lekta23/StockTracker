@@ -22,7 +22,7 @@ data class StockIndex(
     val timestamp: Long
 )
 
-class StockRepository   (private val dbDataSource: StockDatabaseDataSource) : CoroutineScope {
+class StockRepository(private val dbDataSource: StockDatabaseDataSource) : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO
 
@@ -96,4 +96,20 @@ class StockRepository   (private val dbDataSource: StockDatabaseDataSource) : Co
         print("searchSymbol" + indices)
         _searchState.value = indices
     }
+
+    fun deleteIndex(symbol: String) {
+        dbDataSource.deleteIndex(symbol)
+    }
+
+    fun addIndex(symbol:StockIndex ) {
+        dbDataSource.storeIndex(symbol)
+    }
+
+    fun refreshWatchList() {
+        launch {
+            val indices = getStockIndices()
+            _watchlistState.value = indices
+        }
+    }
+
 }
