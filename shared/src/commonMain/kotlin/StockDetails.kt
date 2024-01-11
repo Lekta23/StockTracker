@@ -43,6 +43,8 @@ fun StockDetails(stockIndex: StockIndex, navigator: Navigator, stockRepository: 
                 actions = {
                     IconButton(onClick = {
                         stockRepository.addIndex(stockIndex)
+                        navigator.goBack()
+                        stockRepository.refreshWatchList()
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Add,
