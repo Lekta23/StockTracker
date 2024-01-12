@@ -60,7 +60,7 @@ scene(
         val stockIndices = stockRepository.watchlistState.collectAsState().value
 
         if (stockIndices.isNotEmpty()) {
-          StockWatchList(navigator, stockIndices)
+          StockWatchList(navigator, stockIndices, stockRepository)
         }
     }
     scene(
@@ -68,6 +68,13 @@ scene(
       navTransition = NavTransition(),
     ) {
       News(navigator, stockRepository.newsState.collectAsState().value)
+    }
+
+    scene(
+      route = "/search",
+      navTransition = NavTransition(),
+    ) {
+      searchList(navigator, stockRepository.searchState.collectAsState().value)
     }
   }
 }

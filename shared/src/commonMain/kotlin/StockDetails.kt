@@ -99,6 +99,7 @@ fun StockDetails(stockIndex: StockIndex, navigator: Navigator) {
                 value = stockIndex.change?.toString() ?: "N/A",
                 isPositive = stockIndex.change?.let { it > 0 } ?: false
             )
+            timeLastUpdated(stockIndex.timestamp)
         }
     }
 }
@@ -146,4 +147,13 @@ fun StockValueChangeRow(label: String, value: String, isPositive: Boolean) {
             color = color
         )
     }
+}
+
+@Composable
+fun timeLastUpdated(time: Long) {
+    Text(
+        text = "Last updated: ${time}",
+        style = MaterialTheme.typography.caption,
+        fontWeight = FontWeight.Normal
+    )
 }
