@@ -1,5 +1,7 @@
 package network.data
 
+import io.ktor.util.logging.KtorSimpleLogger
+import io.ktor.util.logging.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -57,6 +59,7 @@ class StockRepository(private val dbDataSource: StockDatabaseDataSource) : Corou
                 dbDataSource.storeIndex(stockIndex)  // Stocker dans la base de données
                 stockIndex
             } catch (e: Exception) {
+                KtorSimpleLogger("StockRepository-getStockIndices").error(e.toString())
                 // En cas d'exception, récupérer de la base de données
                 dbDataSource.getStockIndex(symbol)
             }
@@ -71,6 +74,7 @@ class StockRepository(private val dbDataSource: StockDatabaseDataSource) : Corou
                     _newsState.value = newsList
                     _homeNewsState.value = newsList.take(3)
                 } catch (e: Exception) {
+                    KtorSimpleLogger("StockRepository-GetNews").error(e.toString())
                     // Gérer l'exception, par exemple enregistrer l'erreur
                 }
                 delay(300000) // Mettre à jour les actualités toutes les 60 secondes, par exemple

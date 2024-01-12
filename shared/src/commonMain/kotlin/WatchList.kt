@@ -31,11 +31,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
 import network.data.StockIndex
+import network.data.StockRepository
+
 @Composable
 fun StockWatchList(
   navigator: Navigator,
   stockIndices: List<StockIndex>,
-  coroutineScope: CoroutineScope // Explicitly pass CoroutineScope
+  coroutineScope: CoroutineScope, // Explicitly pass CoroutineScope
+  stockRepository: StockRepository // Explicitly pass StockRepository
 ) {
   var isSearching by remember { mutableStateOf(false) }
   var searchText by remember { mutableStateOf("") }
@@ -67,7 +70,8 @@ fun StockWatchList(
         searchText = searchText,
         onSearchTextChange = { newText -> searchText = newText },
         onDismissRequest = { isSearching = false },
-        coroutineScope = coroutineScope // Pass CoroutineScope to SearchDialog
+        coroutineScope = coroutineScope, // Pass CoroutineScope to SearchDialog
+        stockRepository = stockRepository // Pass StockRepository to SearchDialog
       )
     }
   }
@@ -80,7 +84,8 @@ fun SearchDialog(
   searchText: String,
   onSearchTextChange: (String) -> Unit,
   onDismissRequest: () -> Unit,
-  coroutineScope: CoroutineScope // Explicitly pass CoroutineScope
+  coroutineScope: CoroutineScope, // Explicitly pass CoroutineScope
+  stockRepository: StockRepository // Explicitly pass StockRepository
 ) {
   var isFocused by remember { mutableStateOf(true) }
   val keyboardController = LocalSoftwareKeyboardController.current

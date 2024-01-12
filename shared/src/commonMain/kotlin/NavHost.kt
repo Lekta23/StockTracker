@@ -1,6 +1,7 @@
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import app.cash.sqldelight.db.SqlDriver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -12,13 +13,10 @@ import network.data.StockDatabaseDataSource
 import network.data.StockRepository
 
 
-val driverFactory = DriverFactory()
-val sqlDriver = driverFactory.createDriver()
-val dbDataSource = StockDatabaseDataSource(sqlDriver, CoroutineScope(Dispatchers.IO))
-val stockRepository = StockRepository(dbDataSource)
+
 
 @Composable
-internal fun rootNavHost() {
+internal fun rootNavHost(stockRepository : StockRepository) {
   val navigator = rememberNavigator()
   NavHost(
     navigator = navigator,
@@ -60,7 +58,7 @@ scene(
         val stockIndices = stockRepository.watchlistState.collectAsState().value
 
         if (stockIndices.isNotEmpty()) {
-          StockWatchList(navigator, stockIndices, stockRepository)
+          StockWatchList(navigator, stockIndices,stockRepository, stockRepository)
         }
     }
     scene(
@@ -74,7 +72,7 @@ scene(
       route = "/search",
       navTransition = NavTransition(),
     ) {
-      searchList(navigator, stockRepository.searchState.collectAsState().value)
+      searchList(navigator, stockRepository.searchState.collectAsState().value, stockRepository)
     }
   }
 }

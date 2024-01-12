@@ -4,6 +4,7 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.util.logging.KtorSimpleLogger
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -90,6 +91,7 @@ class FinnhubDataSource(private val apiKey: String) {
             }.body()
             response
         } catch (e: Exception) {
+            KtorSimpleLogger("FinnhubDataSource-getGeneralNews").error("Error while fetching news: $e")
             // Gérer l'exception, retourner une liste vide ou relancer
             emptyList()
         }

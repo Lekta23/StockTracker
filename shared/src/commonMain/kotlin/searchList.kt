@@ -20,10 +20,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
+import network.data.StockRepository
 import network.data.StockSearchResult
 
 @Composable
-fun searchList(navigator: Navigator, symbols: List<StockSearchResult>) {
+fun searchList(navigator: Navigator, symbols: List<StockSearchResult>, stockRepository: StockRepository) {
   Scaffold(
     topBar = {
       TopAppBar(
@@ -50,14 +51,14 @@ fun searchList(navigator: Navigator, symbols: List<StockSearchResult>) {
         }
       }
       items(symbols) { index ->
-        searchRow(index, navigator)
+        searchRow(index, navigator, stockRepository)
       }
     }
   }
 }
 
 @Composable
-fun searchRow(stockIndex: StockSearchResult, navigator: Navigator) {
+fun searchRow(stockIndex: StockSearchResult, navigator: Navigator, stockRepository: StockRepository) {
   Row(
     modifier = Modifier
       .fillMaxWidth()

@@ -3,12 +3,12 @@ import androidx.compose.runtime.Composable
 
 actual fun getPlatformName(): String = "Desktop"
 
-@Composable fun MainView() = App()
+@Composable fun MainView() = App(DriverFactory())
 
 @Preview
 @Composable
 fun AppPreview() {
-    App()
+    App(DriverFactory())
 }
 actual fun openUrl(url: String) {
     java.awt.Desktop.getDesktop().browse(java.net.URI(url))
