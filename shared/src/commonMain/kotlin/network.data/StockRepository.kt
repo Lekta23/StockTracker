@@ -101,8 +101,10 @@ class StockRepository(private val dbDataSource: StockDatabaseDataSource) : Corou
         dbDataSource.deleteIndex(symbol)
     }
 
-    fun addIndex(symbol:StockIndex ) {
-        dbDataSource.storeIndex(symbol)
+    suspend fun addIndex(symbol: String) {
+        val index = dataSource.getStockIndex(symbol)
+        print("addIndex" + index)
+        dbDataSource.storeIndex(index)
     }
 
     fun refreshWatchList() {
