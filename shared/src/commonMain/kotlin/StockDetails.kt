@@ -24,9 +24,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import moe.tlaster.precompose.navigation.Navigator
 import network.data.StockIndex
+import network.data.StockRepository
+
 
 @Composable
-fun StockDetails(stockIndex: StockIndex, navigator: Navigator) {
+fun StockDetails(stockIndex: StockIndex, navigator: Navigator, stockRepository: StockRepository) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -40,13 +42,12 @@ fun StockDetails(stockIndex: StockIndex, navigator: Navigator) {
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* do something */ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Add,
-                            contentDescription = "Add stock to the watch list"
-                        )
-                    }
-                    IconButton(onClick = { /* do something */ }) {
+                    IconButton(onClick = {
+                        stockRepository.deleteIndex(stockIndex.symbol)
+                        navigator.goBack()
+                        stockRepository.refreshWatchList()
+
+                    }) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
                             contentDescription = "Delete stock from the watch list"
@@ -99,7 +100,6 @@ fun StockDetails(stockIndex: StockIndex, navigator: Navigator) {
                 value = stockIndex.change?.toString() ?: "N/A",
                 isPositive = stockIndex.change?.let { it > 0 } ?: false
             )
-            timeLastUpdated(stockIndex.timestamp)
         }
     }
 }
@@ -149,11 +149,6 @@ fun StockValueChangeRow(label: String, value: String, isPositive: Boolean) {
     }
 }
 
-@Composable
-fun timeLastUpdated(time: Long) {
-    Text(
-        text = "Last updated: ${time}",
-        style = MaterialTheme.typography.caption,
-        fontWeight = FontWeight.Normal
-    )
-}
+
+
+

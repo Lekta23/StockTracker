@@ -8,6 +8,7 @@ class StockDatabaseDataSource(private val sqlDriver: SqlDriver, private val coro
     private  var database=StockTrackerDatabase(sqlDriver)
     private  var dbQueries=database.stockTrackerDatabaseQueries
     fun storeIndex(stockIndex: StockIndex) {
+        print("storeIndex" + stockIndex)
         dbQueries.insertOrUpdateIndex(
             stockIndex.symbol,
             stockIndex.currentPrice,
@@ -55,6 +56,10 @@ class StockDatabaseDataSource(private val sqlDriver: SqlDriver, private val coro
 
     fun getAllSymbols(): List<String> {
         return dbQueries.selectAllIndices().executeAsList().map { it.symbol }
+    }
+
+    fun deleteIndex(symbol: String) {
+        dbQueries.deleteIndex(symbol)
     }
 
     // Implémentez d'autres méthodes si nécessaire

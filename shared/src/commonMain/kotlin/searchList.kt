@@ -16,11 +16,14 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import moe.tlaster.precompose.navigation.Navigator
 import network.data.StockSearchResult
 
 @Composable
-fun searchList( navigator: Navigator, symbols : List<StockSearchResult>) {
+fun searchList(navigator: Navigator, symbols: List<StockSearchResult>) {
   Scaffold(
     topBar = {
       TopAppBar(
@@ -34,21 +37,27 @@ fun searchList( navigator: Navigator, symbols : List<StockSearchResult>) {
           }
         },
       )
-    }) {
+    }
+  ) {
     LazyColumn(
       contentPadding = PaddingValues(all = 8.dp),
       modifier = Modifier.padding(bottom = 56.dp),
       verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
+      if (symbols.isEmpty()) {
+        item {
+          Text("No results")
+        }
+      }
       items(symbols) { index ->
-        searchRow(index)
+        searchRow(index, navigator)
       }
     }
   }
 }
 
 @Composable
-fun searchRow(stockIndex: StockSearchResult) {
+fun searchRow(stockIndex: StockSearchResult, navigator: Navigator) {
   Row(
     modifier = Modifier
       .fillMaxWidth()
@@ -56,7 +65,14 @@ fun searchRow(stockIndex: StockSearchResult) {
   ) {
     Text(text = stockIndex.symbol, modifier = Modifier.weight(1f))
     Text(text = "${stockIndex.description}", modifier = Modifier.weight(1f))
-    IconButton(onClick = { /*TODO*/ }) {
+    IconButton(onClick = {
+      // Use coroutineScope to call suspend function
+      CoroutineScope(Dispatchers.Main).launch {
+        stockRepository.addIndex(stockIndex.symbol)
+        navigator.goBack()
+        stockRepository.refreshWatchList()
+      }
+    }) {
       Icon(Icons.Filled.Add, contentDescription = "Localized description")
     }
   }

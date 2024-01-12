@@ -26,3 +26,7 @@ selectAllSymbols {
 selectIndex {
     SELECT * FROM StockTrackerDatabase WHERE symbol = ?;
 }
+
+deleteIndex {
+    DELETE FROM StockTrackerDatabase WHERE symbol = ?;
+}
